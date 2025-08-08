@@ -10,7 +10,8 @@ public class Notificacao {
     private Instant dataHora;
     private boolean lida;
 
-    public Notificacao() {}
+    public Notificacao() {
+    }
 
     public Notificacao(Long notificacaoId, Cliente cliente, String tipo, String mensagem, Instant dataHora, boolean lida) {
         this.notificacaoId = notificacaoId;

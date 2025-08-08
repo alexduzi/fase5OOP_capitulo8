@@ -102,16 +102,6 @@ public class Cartao {
 
     @Override
     public String toString() {
-        return "Cartao{" +
-               "cartaoId=" + cartaoId +
-               ", conta=" + conta +
-               ", numeroCartao='" + numeroCartao + '\'' +
-               ", nomeImpresso='" + nomeImpresso + '\'' +
-               ", dataExpiracao=" + dataExpiracao +
-               ", cvv='" + cvv + '\'' +
-               ", ativo=" + ativo +
-               ", tipoCartao='" + tipoCartao + '\'' +
-               ", limite=" + limite +
-               '}';
+        return "Cartao{" + "cartaoId=" + cartaoId + ", conta=" + conta + ", numeroCartao='" + numeroCartao + '\'' + ", nomeImpresso='" + nomeImpresso + '\'' + ", dataExpiracao=" + dataExpiracao + ", cvv='" + cvv + '\'' + ", ativo=" + ativo + ", tipoCartao='" + tipoCartao + '\'' + ", limite=" + limite + '}';
     }
 }

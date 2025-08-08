@@ -82,14 +82,6 @@ public class Fatura {
 
     @Override
     public String toString() {
-        return "Fatura{" +
-               "faturaId=" + faturaId +
-               ", cartao=" + cartao +
-               ", dataFechamento=" + dataFechamento +
-               ", dataVencimento=" + dataVencimento +
-               ", valorTotal=" + valorTotal +
-               ", statusPagamento='" + statusPagamento + '\'' +
-               ", valorMinimo=" + valorMinimo +
-               '}';
+        return "Fatura{" + "faturaId=" + faturaId + ", cartao=" + cartao + ", dataFechamento=" + dataFechamento + ", dataVencimento=" + dataVencimento + ", valorTotal=" + valorTotal + ", statusPagamento='" + statusPagamento + '\'' + ", valorMinimo=" + valorMinimo + '}';
     }
 }

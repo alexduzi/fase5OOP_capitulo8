@@ -12,7 +12,8 @@ public class Investimento {
     private LocalDate dataVencimento;
     private String status;
 
-    public Investimento() {}
+    public Investimento() {
+    }
 
     public Investimento(Long investimentoId, Cliente cliente, String tipoInvstimento, Double valorAplicado, Double rentabilidade, LocalDate dataAplicacao, LocalDate dataVencimento, String status) {
         this.investimentoId = investimentoId;

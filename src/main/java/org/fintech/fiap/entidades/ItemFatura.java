@@ -12,7 +12,8 @@ public class ItemFatura {
     private Integer parcela;
     private Integer totalParcelas;
 
-    public ItemFatura() {}
+    public ItemFatura() {
+    }
 
     public Long getItemId() {
         return itemId;
