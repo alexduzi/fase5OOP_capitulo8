@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("=== SISTEMA FINTECH - ARQUITETURA ORIENTADA A OBJETOS ===\n");
+        System.out.println("=== SISTEMA FINTECH ===\n");
 
         // 1. Criando clientes com entidades abstraídas
         Cliente cliente1 = new Cliente(1L, "João Silva", "123.456.789-00", "joao.silva@email.com",
@@ -61,11 +61,17 @@ public class Main {
         }
         System.out.println();
 
-        // 4. Demonstrando polimorfismo com lista de operações
+        // 4. Criando cartão antes das operações de crédito
+        System.out.println("=== CRIAÇÃO DE CARTÃO ===");
+        IOperacoesCartao opCartaoTemp = new OperacoesCartao(conta1);
+        Cartao cartao1 = opCartaoTemp.criarCartao("Crédito", 3000.0);
+        System.out.println();
+
+        // 5. Demonstrando polimorfismo com lista de operações
         System.out.println("=== POLIMORFISMO - EXECUTANDO TODAS AS OPERAÇÕES ===");
         List<IOperacoes> todasOperacoes = Arrays.asList(
                 new OperacoesBancarias(conta1),
-                new OperacoesCredito(conta1, null),
+                new OperacoesCredito(conta1, cartao1), // Passando o cartão criado
                 new OperacoesInvestimento(conta1),
                 new OperacoesCartao(conta1),
                 new OperacoesNotificacao(conta1),
@@ -80,7 +86,7 @@ public class Main {
         }
         System.out.println();
 
-        // 5. Testando operações bancárias com interface
+        // 6. Testando operações bancárias com interface
         System.out.println("=== OPERAÇÕES BANCÁRIAS (INTERFACE) ===");
         IOperacoesBancarias opBancarias = new OperacoesBancarias(conta1);
         opBancarias.executarOperacao();
@@ -98,18 +104,18 @@ public class Main {
         }
         System.out.println();
 
-        // 6. Operações de cartão
+        // 7. Operações de cartão
         System.out.println("=== OPERAÇÕES DE CARTÃO ===");
         IOperacoesCartao opCartao = new OperacoesCartao(conta1);
         opCartao.executarOperacao();
 
-        Cartao cartao1 = opCartao.criarCartao("Crédito", 3000.0);
-        opCartao.alterarLimite(cartao1.getCartaoId(), 5000.0);
-        opCartao.bloquearCartao(cartao1.getCartaoId());
-        opCartao.desbloquearCartao(cartao1.getCartaoId());
+        Cartao cartao2 = opCartao.criarCartao("Débito", 1000.0);
+        opCartao.alterarLimite(cartao2.getCartaoId(), 1500.0);
+        opCartao.bloquearCartao(cartao2.getCartaoId());
+        opCartao.desbloquearCartao(cartao2.getCartaoId());
         System.out.println();
 
-        // 7. Operações de crédito
+        // 8. Operações de crédito
         System.out.println("=== OPERAÇÕES DE CRÉDITO ===");
         IOperacoesCredito opCredito = new OperacoesCredito(conta1, cartao1);
         opCredito.executarOperacao();
@@ -120,7 +126,7 @@ public class Main {
         System.out.println("Fatura ID: " + fatura.getFaturaId());
         System.out.println();
 
-        // 8. Operações de investimento
+        // 9. Operações de investimento
         System.out.println("=== OPERAÇÕES DE INVESTIMENTO ===");
         IOperacoesInvestimento opInvestimento = new OperacoesInvestimento(conta1);
         opInvestimento.executarOperacao();
@@ -131,7 +137,7 @@ public class Main {
         opInvestimento.resgateInvestimento(investimento.getInvestimentoId());
         System.out.println();
 
-        // 9. Operações de notificação
+        // 10. Operações de notificação
         System.out.println("=== OPERAÇÕES DE NOTIFICAÇÃO ===");
         IOperacoesNotificacao opNotificacao = new OperacoesNotificacao(conta1);
         opNotificacao.executarOperacao();
@@ -142,7 +148,7 @@ public class Main {
         opNotificacao.marcarComoLida(notificacao.getNotificacaoId());
         System.out.println();
 
-        // 10. Operações de fatura
+        // 11. Operações de fatura
         System.out.println("=== OPERAÇÕES DE FATURA ===");
         IOperacoesFatura opFatura = new OperacoesFatura(conta1);
         opFatura.executarOperacao();
@@ -153,7 +159,7 @@ public class Main {
         opFatura.pagarFatura(fatura.getFaturaId(), 350.0);
         System.out.println();
 
-        // 11. Operações de empréstimo
+        // 12. Operações de empréstimo
         System.out.println("=== OPERAÇÕES DE EMPRÉSTIMO ===");
         OperacoesEmprestimo opEmprestimo = new OperacoesEmprestimo(conta1);
         opEmprestimo.executarOperacao();
@@ -164,7 +170,7 @@ public class Main {
         opEmprestimo.quitarEmprestimo(emprestimo.getEmprestimoId());
         System.out.println();
 
-        // 12. Operações de relatório
+        // 13. Operações de relatório
         System.out.println("=== OPERAÇÕES DE RELATÓRIO ===");
         OperacoesRelatorio opRelatorio = new OperacoesRelatorio(conta1);
         opRelatorio.executarOperacao();
@@ -175,29 +181,19 @@ public class Main {
         opRelatorio.gerarComprovanteTransacao(123L);
         System.out.println();
 
-        // 13. Operações de transações
+        // 14. Operações de transações
         System.out.println("=== OPERAÇÕES DE TRANSAÇÕES ===");
         OperacoesTransacoes opTransacoes = new OperacoesTransacoes();
         opTransacoes.executarOperacao();
         opTransacoes.imprimeTransacoes();
         System.out.println();
 
-        // 14. Demonstrando autenticação
+        // 15. Demonstrando autenticação
         System.out.println("=== SISTEMA DE AUTENTICAÇÃO ===");
         Login login1 = new Login(cliente1.getEmail(), cliente1.getSenha());
         Login login2 = new Login(cliente2.getEmail(), cliente2.getSenha());
         login1.doLogin();
         login2.doLogin();
         System.out.println();
-
-        // 15. Resumo do sistema
-        System.out.println("=== RESUMO DO SISTEMA ===");
-        System.out.println("Total de clientes: 2");
-        System.out.println("Total de contas: 2");
-        System.out.println("Total de operações implementadas: 9");
-        System.out.println("Arquitetura: Orientada a Objetos com Interfaces e Abstrações");
-        System.out.println("Padrões utilizados: Template Method, Strategy, Factory Method");
-
-        System.out.println("\n=== FIM DA DEMONSTRAÇÃO ===");
     }
 }

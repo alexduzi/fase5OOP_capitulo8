@@ -2,15 +2,23 @@ package org.fintech.fiap.operacoes;
 
 import org.fintech.fiap.entidades.Conta;
 import org.fintech.fiap.excecoes.SaldoException;
+import org.fintech.fiap.interfaces.IOperacoesBancarias;
 
-public class OperacoesBancarias {
-    private Conta contaOrigem;
+public class OperacoesBancarias extends OperacoesBase implements IOperacoesBancarias {
 
     public OperacoesBancarias(Conta conta) {
-        contaOrigem = conta;
+        super(conta);
     }
 
+    @Override
+    public void executarOperacao() {
+        logOperacao("OPERAÇÕES BANCÁRIAS", "Sistema bancário ativo para " + getInfoConta());
+    }
+
+    @Override
     public void depositar(Conta contaDestino, Double valor) {
+        if (!validarOperacao()) return;
+
         StringBuilder sb = new StringBuilder();
         sb.append("Deposito para: ");
         sb.append(contaDestino.getCliente().getNome());
@@ -20,37 +28,41 @@ public class OperacoesBancarias {
         sb.append(contaDestino.getNumeroConta());
         sb.append(" Valor: ");
         sb.append(String.format("%.2f", valor));
-        System.out.println(sb);
-        contaDestino.setSaldo(contaDestino.getSaldo() + valor);
+
+        logOperacao("DEPÓSITO", sb.toString());
+        contaDestino.atualizarSaldo(valor);
     }
 
+    @Override
     public Double sacar(Double valor) throws SaldoException {
+        if (!validarOperacao()) return 0.0;
+
         if (!verificaSaldo(valor)) {
             throw new SaldoException("Saldo insuficiente!");
         }
 
-        contaOrigem.setSaldo(contaOrigem.getSaldo() - valor);
-
-        System.out.println("Saldo atual: " + contaOrigem.getSaldo());
+        conta.atualizarSaldo(-valor);
+        logOperacao("SAQUE", String.format("Valor sacado: R$ %.2f - Saldo atual: R$ %.2f", valor, conta.getSaldo()));
 
         return valor;
     }
 
+    @Override
     public void transferir(Conta contaDestino, Double valor) throws SaldoException {
+        if (!validarOperacao()) return;
+
         if (!verificaSaldo(valor)) {
             throw new SaldoException("Saldo insuficiente!");
         }
 
-        contaOrigem.setSaldo(contaOrigem.getSaldo() - valor);
+        conta.atualizarSaldo(-valor);
+        contaDestino.atualizarSaldo(valor);
 
-        contaDestino.setSaldo(contaDestino.getSaldo() + valor);
-
-        System.out.println("Transferencia realizada!");
-
-        System.out.println("Saldo atual: " + contaOrigem.getSaldo());
+        logOperacao("TRANSFERÊNCIA", String.format("R$ %.2f transferido para conta %s", valor, contaDestino.getNumeroConta()));
     }
 
     private boolean verificaSaldo(Double valor) {
-        return contaOrigem.getSaldo() > valor;
+        double saldoDisponivel = conta.getSaldo() + (conta.getLimiteCredito() != null ? conta.getLimiteCredito() : 0);
+        return saldoDisponivel >= valor;
     }
 }
